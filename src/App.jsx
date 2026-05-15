@@ -53,7 +53,7 @@ function App() {
   return (
     <MockDBProvider>
       <AuthProvider>
-        <Router>
+        <Router basename="/HRManpowerLandingPage">
           <Routes>
             {/* Public & Employee Routes */}
             <Route path="/" element={<AuthGuard><PublicLayout><Home /></PublicLayout></AuthGuard>} />
