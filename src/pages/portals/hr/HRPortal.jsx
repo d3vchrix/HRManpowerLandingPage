@@ -1,13 +1,8 @@
 import { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useAuth } from '../context/AuthContext';
-import { useDB } from '../context/MockDBContext';
+import { useAuth } from '../../../context/AuthContext';
+import { useDB } from '../../../context/MockDBContext';
 import { useNavigate } from 'react-router-dom';
-import AdminDashboard from './admin/AdminDashboard';
-import AdminCompanyProfiles from './admin/AdminCompanyProfiles';
-import AdminJobApprovals from './admin/AdminJobApprovals';
-import AdminUserManagement from './admin/AdminUserManagement';
-import AdminTickets from './admin/AdminTickets';
 
 // --- SHARED UI COMPONENTS ---
 
@@ -131,70 +126,7 @@ const HREmailComposer = () => {
   );
 };
 
-
-// --- REPORTS VIEWS ---
-
-const ReportsView = ({ isHR }) => {
-  const { addAlert } = useDB();
-  const [dateRange, setDateRange] = useState({ from: '2023-01-01', to: '2023-12-31' });
-
-  return (
-    <div className="bg-white p-8 rounded-2xl shadow-lg">
-      <div className="flex justify-between items-center mb-6 border-b pb-4">
-        <h3 className="text-2xl font-bold text-space-blue">{isHR ? 'HR Reports' : 'Admin System Reports'}</h3>
-        <div className="flex items-center gap-2 text-sm">
-          <label className="font-semibold text-gray-600">Coverage:</label>
-          <input type="date" value={dateRange.from} onChange={e => setDateRange({...dateRange, from: e.target.value})} className="border rounded px-2 py-1" />
-          <span>to</span>
-          <input type="date" value={dateRange.to} onChange={e => setDateRange({...dateRange, to: e.target.value})} className="border rounded px-2 py-1" />
-        </div>
-      </div>
-      
-      {isHR && (
-        <div className="mb-8 p-6 bg-gray-50 border border-gray-200 rounded-xl flex gap-4 items-end">
-          <div className="flex-grow">
-            <label className="block text-sm font-bold text-gray-700 mb-2">Generate PDF List of Applicants by Job Post</label>
-            <select className="w-full border-gray-300 rounded-lg px-4 py-2 border text-sm">
-              <option>All Job Posts</option>
-              <option>UI/UX Designer</option>
-              <option>Frontend Developer</option>
-            </select>
-          </div>
-          <button onClick={() => addAlert('PDF Generated successfully and downloaded!', 'success')} className="bg-mint-green text-space-blue px-6 py-2 rounded-lg font-bold h-[42px]"><i className="bi bi-file-earmark-pdf mr-2"></i>Generate PDF</button>
-        </div>
-      )}
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <div className="border border-gray-200 p-6 rounded-xl">
-          <h4 className="font-bold text-space-blue mb-4"><i className="bi bi-graph-up-arrow text-mint-green mr-2"></i> {isHR ? 'Applicant Volume (MoM)' : 'Platform Growth (MoM)'}</h4>
-          <div className="flex items-end gap-2 h-40 mt-4 border-b border-l border-gray-300 p-2 relative">
-            <div className="w-1/4 bg-blue-200 h-[30%] hover:bg-blue-400 transition-colors relative group"><span className="absolute -top-6 left-1/2 transform -translate-x-1/2 text-xs hidden group-hover:block">Q1</span></div>
-            <div className="w-1/4 bg-blue-300 h-[50%] hover:bg-blue-500 transition-colors relative group"><span className="absolute -top-6 left-1/2 transform -translate-x-1/2 text-xs hidden group-hover:block">Q2</span></div>
-            <div className="w-1/4 bg-blue-400 h-[70%] hover:bg-blue-600 transition-colors relative group"><span className="absolute -top-6 left-1/2 transform -translate-x-1/2 text-xs hidden group-hover:block">Q3</span></div>
-            <div className="w-1/4 bg-mint-green h-[90%] hover:bg-green-500 transition-colors relative group"><span className="absolute -top-6 left-1/2 transform -translate-x-1/2 text-xs hidden group-hover:block">Q4</span></div>
-          </div>
-        </div>
-
-        <div className="border border-gray-200 p-6 rounded-xl">
-          <h4 className="font-bold text-space-blue mb-4"><i className="bi bi-trophy text-yellow-500 mr-2"></i> {isHR ? 'Hiring Success Rate' : 'Placement Success Rate'}</h4>
-          <table className="w-full text-sm text-left mt-4">
-            <thead>
-              <tr className="border-b text-gray-500"><th className="pb-2">Metric</th><th className="pb-2">Value</th><th className="pb-2">Trend</th></tr>
-            </thead>
-            <tbody>
-              <tr className="border-b"><td className="py-2">Total Placements</td><td className="py-2 font-bold text-space-blue">1,204</td><td className="py-2 text-green-500"><i className="bi bi-arrow-up"></i> 12%</td></tr>
-              <tr className="border-b"><td className="py-2">Time-to-Hire</td><td className="py-2 font-bold text-space-blue">14 Days</td><td className="py-2 text-green-500"><i className="bi bi-arrow-down"></i> 2 Days</td></tr>
-              <tr><td className="py-2">Offer Acceptance</td><td className="py-2 font-bold text-space-blue">89%</td><td className="py-2 text-yellow-500"><i className="bi bi-dash"></i> 0%</td></tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-
-// --- HR SPECIFIC COMPONENTS ---
+// --- HR SPECIFIC COMPONENTS (same as AdminPortal) ---
 
 const HRDashboardHome = () => (
   <>
@@ -260,7 +192,6 @@ const HRCompanyProfile = () => {
 
   return (
     <div className="max-w-6xl mx-auto">
-      {/* Goal Notification */}
       <AnimatePresence>
         {showGoal && (
           <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, height: 0 }} className="bg-yellow-50 border border-yellow-200 p-4 rounded-xl mb-6 flex justify-between items-center shadow-sm">
@@ -277,7 +208,6 @@ const HRCompanyProfile = () => {
       </AnimatePresence>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* Profile Form */}
         <div className="lg:col-span-2 bg-white p-8 rounded-2xl shadow-lg">
           <h3 className="text-2xl font-bold text-space-blue mb-6 border-b pb-4">Company Profile</h3>
           
@@ -299,7 +229,6 @@ const HRCompanyProfile = () => {
           </form>
         </div>
 
-        {/* Company Rates side panel */}
         <div className="bg-white p-8 rounded-2xl shadow-lg">
           <div className="flex justify-between items-center mb-6 border-b pb-4">
             <h3 className="text-xl font-bold text-space-blue">Employee Rates</h3>
@@ -527,13 +456,9 @@ const HRJobDetailsPage = ({ job, goBack }) => (
   </div>
 );
 
+// --- MAIN HR PORTAL COMPONENT ---
 
-// --- ADMIN SPECIFIC PAGES — imported from ./admin/ ---
-
-
-// --- MAIN PORTAL COMPONENT ---
-
-const AdminPortal = () => {
+const HRPortal = () => {
   const { user, logout } = useAuth();
   const { addAlert } = useDB();
   const navigate = useNavigate();
@@ -542,17 +467,13 @@ const AdminPortal = () => {
   const [showNotifications, setShowNotifications] = useState(false);
   const [empMenuOpen, setEmpMenuOpen] = useState(false);
 
-  const isHR = user?.role === 'hr';
-
-  const notifications = isHR ? [
+  const notifications = [
     { id: 1, text: "New application for UI/UX Designer", action: () => { setActiveMenu('emp-apps'); setShowNotifications(false); } }
-  ] : [
-    { id: 1, text: "UI/UX Designer pending approval", action: () => { setActiveMenu('jobs'); setShowNotifications(false); } }
   ];
 
   const handleLogout = () => {
     logout();
-    navigate('/');
+    navigate('/login');
   };
 
   const navigateToMenu = (menu) => {
@@ -571,47 +492,35 @@ const AdminPortal = () => {
       {/* Sidebar Navigation */}
       <div className="w-64 bg-space-blue flex flex-col shadow-2xl z-20 shrink-0">
         <div className="p-6 border-b border-gray-700">
-          <h2 className="text-2xl font-bold text-mint-green flex items-center gap-2"><i className="bi bi-buildings"></i> Apex {isHR ? 'HR' : 'Admin'}</h2>
+          <h2 className="text-2xl font-bold text-mint-green flex items-center gap-2"><i className="bi bi-briefcase"></i> Apex HR</h2>
         </div>
         <div className="flex-grow py-4 overflow-y-auto">
-          {isHR ? (
-            <>
-              <SidebarItem id="home" icon="bi-house-door" label="Dashboard" />
-              <SidebarItem id="company" icon="bi-building" label="Company Profile" />
-              
-              {/* Nested Dropdown for Employees */}
-              <div className="flex flex-col">
-                <button onClick={() => setEmpMenuOpen(!empMenuOpen)} className="w-full flex items-center justify-between px-6 py-4 text-gray-300 hover:bg-white hover:bg-opacity-10 transition-colors">
-                  <span className="flex items-center gap-3"><i className="bi bi-people text-xl"></i> Employees</span>
-                  <i className={`bi bi-chevron-${empMenuOpen ? 'up' : 'down'} text-xs`}></i>
-                </button>
-                <AnimatePresence>
-                  {empMenuOpen && (
-                    <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="bg-gray-900 overflow-hidden">
-                      <button onClick={() => navigateToMenu('emp-apps')} className={`w-full text-left pl-12 pr-6 py-3 text-sm transition-colors ${activeMenu === 'emp-apps' ? 'text-mint-green font-bold' : 'text-gray-400 hover:text-white'}`}>Applications</button>
-                      <button onClick={() => navigateToMenu('emp-manage')} className={`w-full text-left pl-12 pr-6 py-3 text-sm transition-colors ${activeMenu === 'emp-manage' ? 'text-mint-green font-bold' : 'text-gray-400 hover:text-white'}`}>Management</button>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
+          <>
+            <SidebarItem id="home" icon="bi-house-door" label="Dashboard" />
+            <SidebarItem id="company" icon="bi-building" label="Company Profile" />
+            
+            {/* Nested Dropdown for Employees */}
+            <div className="flex flex-col">
+              <button onClick={() => setEmpMenuOpen(!empMenuOpen)} className="w-full flex items-center justify-between px-6 py-4 text-gray-300 hover:bg-white hover:bg-opacity-10 transition-colors">
+                <span className="flex items-center gap-3"><i className="bi bi-people text-xl"></i> Employees</span>
+                <i className={`bi bi-chevron-${empMenuOpen ? 'up' : 'down'} text-xs`}></i>
+              </button>
+              <AnimatePresence>
+                {empMenuOpen && (
+                  <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="bg-gray-900 overflow-hidden">
+                    <button onClick={() => navigateToMenu('emp-apps')} className={`w-full text-left pl-12 pr-6 py-3 text-sm transition-colors ${activeMenu === 'emp-apps' ? 'text-mint-green font-bold' : 'text-gray-400 hover:text-white'}`}>Applications</button>
+                    <button onClick={() => navigateToMenu('emp-manage')} className={`w-full text-left pl-12 pr-6 py-3 text-sm transition-colors ${activeMenu === 'emp-manage' ? 'text-mint-green font-bold' : 'text-gray-400 hover:text-white'}`}>Management</button>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
 
-              <SidebarItem id="questions" icon="bi-patch-question" label="Questions" />
-              <SidebarItem id="hiring" icon="bi-calendar-check" label="Hiring Process" />
-              <SidebarItem id="jobs" icon="bi-briefcase" label="Job Posts" />
-              <SidebarItem id="email" icon="bi-envelope-paper" label="Email Composer" />
-              <SidebarItem id="reports" icon="bi-file-earmark-bar-graph" label="Reports" />
-            </>
-          ) : (
-            <>
-              <SidebarItem id="home" icon="bi-house-door" label="Dashboard" />
-              <SidebarItem id="company" icon="bi-building" label="Company Profiles" />
-              <SidebarItem id="jobs" icon="bi-briefcase" label="Job Post Approvals" />
-              <SidebarItem id="users" icon="bi-person-gear" label="User Management" />
-              <SidebarItem id="email" icon="bi-envelope-paper" label="Email Composer" />
-              <SidebarItem id="tickets" icon="bi-ticket" label="Ticket Monitoring" />
-              <SidebarItem id="reports" icon="bi-file-earmark-bar-graph" label="Reports" />
-            </>
-          )}
+            <SidebarItem id="questions" icon="bi-patch-question" label="Questions" />
+            <SidebarItem id="hiring" icon="bi-calendar-check" label="Hiring Process" />
+            <SidebarItem id="jobs" icon="bi-briefcase" label="Job Posts" />
+            <SidebarItem id="email" icon="bi-envelope-paper" label="Email Composer" />
+            <SidebarItem id="reports" icon="bi-file-earmark-bar-graph" label="Reports" />
+          </>
         </div>
         <div className="p-4 border-t border-gray-700">
           <button onClick={handleLogout} className="w-full flex items-center justify-center gap-2 bg-red-500 hover:bg-red-600 text-white py-2 rounded-lg transition-colors font-bold"><i className="bi bi-box-arrow-right"></i> Logout</button>
@@ -648,7 +557,7 @@ const AdminPortal = () => {
             <div className="flex items-center gap-3 pl-6 border-l">
               <div className="text-right hidden sm:block">
                 <p className="text-sm font-bold text-space-blue">{user?.name}</p>
-                <p className="text-xs text-gray-500">{user?.role?.toUpperCase()}</p>
+                <p className="text-xs text-gray-500">HR MANAGER</p>
               </div>
               <img src={user?.photoURL} alt="Profile" className="w-10 h-10 rounded-full border-2 border-mint-green" />
             </div>
@@ -662,22 +571,15 @@ const AdminPortal = () => {
               {/* PAGE ROUTING */}
               {viewData?.type === 'hr-job-details' && <HRJobDetailsPage job={viewData.payload} goBack={() => setViewData(null)} />}
               
-              {isHR && !viewData && activeMenu === 'home' && <HRDashboardHome />}
-              {isHR && !viewData && activeMenu === 'company' && <HRCompanyProfile />}
-              {isHR && !viewData && activeMenu === 'emp-apps' && <HREmployeeApplications />}
-              {isHR && !viewData && activeMenu === 'emp-manage' && <HREmployeeManagement />}
-              {isHR && !viewData && activeMenu === 'questions' && <HRQuestionsModule />}
-              {isHR && !viewData && activeMenu === 'hiring' && <HRHiringProcess />}
-              {isHR && !viewData && activeMenu === 'jobs' && <HRJobPosts setViewData={setViewData} />}
-
-              {!isHR && !viewData && activeMenu === 'home' && <AdminDashboard />}
-              {!isHR && !viewData && activeMenu === 'company' && <AdminCompanyProfiles addAlert={addAlert} />}
-              {!isHR && !viewData && activeMenu === 'jobs' && <AdminJobApprovals addAlert={addAlert} />}
-              {!isHR && !viewData && activeMenu === 'users' && <AdminUserManagement addAlert={addAlert} />}
-              {!isHR && !viewData && activeMenu === 'tickets' && <AdminTickets addAlert={addAlert} />}
-
+              {!viewData && activeMenu === 'home' && <HRDashboardHome />}
+              {!viewData && activeMenu === 'company' && <HRCompanyProfile />}
+              {!viewData && activeMenu === 'emp-apps' && <HREmployeeApplications />}
+              {!viewData && activeMenu === 'emp-manage' && <HREmployeeManagement />}
+              {!viewData && activeMenu === 'questions' && <HRQuestionsModule />}
+              {!viewData && activeMenu === 'hiring' && <HRHiringProcess />}
+              {!viewData && activeMenu === 'jobs' && <HRJobPosts setViewData={setViewData} />}
               {!viewData && activeMenu === 'email' && <HREmailComposer />}
-              {!viewData && activeMenu === 'reports' && <ReportsView isHR={isHR} />}
+              {!viewData && activeMenu === 'reports' && <div className="bg-white p-8 rounded-2xl shadow-lg"><h3 className="text-2xl font-bold text-space-blue mb-4">HR Reports</h3><p className="text-gray-600">Reports dashboard for HR Manager</p></div>}
               
             </motion.div>
           </AnimatePresence>
@@ -687,4 +589,4 @@ const AdminPortal = () => {
   );
 };
 
-export default AdminPortal;
+export default HRPortal;

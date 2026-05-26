@@ -4,14 +4,17 @@ import { AuthProvider, useAuth } from './context/AuthContext';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 
-import Home from './pages/Home';
-import About from './pages/About';
-import Careers from './pages/Careers';
-import News from './pages/News';
-import Login from './pages/Login';
-import AdminPortal from './pages/AdminPortal';
+import Home from './pages/public/Home';
+import About from './pages/public/About';
+import Careers from './pages/public/Careers';
+import News from './pages/public/News';
+import Login from './pages/public/Login';
+import DemoLogin from './pages/public/DemoLogin';
+import AdminPortal from './pages/portals/admin/AdminPortal';
+import HRPortal from './pages/portals/hr/HRPortal';
 
-import EmployeeDashboard from './pages/EmployeeDashboard';
+// NEW: Import Facebook-style EmployeePortal (no animations)
+import EmployeePortal from './pages/portals/employee/EmployeeDashboard';
 
 // Protected Route Component for Admin/HR
 const AdminRoute = ({ children }) => {
@@ -22,15 +25,27 @@ const AdminRoute = ({ children }) => {
   return children;
 };
 
+// Protected Route for Employees
+const EmployeeRoute = ({ children }) => {
+  const { user } = useAuth();
+  if (!user || user.role !== 'employee') {
+    return <Navigate to="/login" />;
+  }
+  return children;
+};
+
 // Route Guard to redirect logged-in users away from Public/Login pages appropriately
 const AuthGuard = ({ children, isLoginRoute = false }) => {
   const { user } = useAuth();
   if (user) {
-    if (user.role === 'admin' || user.role === 'hr') {
+    if (user.role === 'admin') {
       return <Navigate to="/admin" />;
     }
-    if (isLoginRoute && user.role === 'employee') {
-      return <Navigate to="/employee/account" />;
+    if (user.role === 'hr') {
+      return <Navigate to="/hr" />;
+    }
+    if (user.role === 'employee') {
+      return <Navigate to="/employee" />;
     }
   }
   return children;
@@ -60,15 +75,25 @@ function App() {
             <Route path="/about" element={<AuthGuard><PublicLayout><About /></PublicLayout></AuthGuard>} />
             <Route path="/careers/*" element={<AuthGuard><PublicLayout><Careers /></PublicLayout></AuthGuard>} />
             <Route path="/news" element={<AuthGuard><PublicLayout><News /></PublicLayout></AuthGuard>} />
-            <Route path="/login" element={<AuthGuard isLoginRoute><PublicLayout><Login /></PublicLayout></AuthGuard>} />
+            <Route path="/login" element={<AuthGuard><PublicLayout><Login /></PublicLayout></AuthGuard>} />
+            <Route path="/demo-login" element={<AuthGuard><PublicLayout><DemoLogin /></PublicLayout></AuthGuard>} />
             
-            {/* Employee Dropdown Routes */}
-            <Route path="/employee/*" element={<PublicLayout><EmployeeDashboard /></PublicLayout>} />
+            {/* NEW: Facebook-style Employee Portal (no animations, protected) */}
+            <Route path="/employee/*" element={
+              <EmployeeRoute>
+                <EmployeePortal />
+              </EmployeeRoute>
+            } />
 
             {/* Admin & HR Routes (No public Navbar/Footer, relies on its own layout) */}
             <Route path="/admin" element={
               <AdminRoute>
                 <AdminPortal />
+              </AdminRoute>
+            } />
+            <Route path="/hr" element={
+              <AdminRoute>
+                <HRPortal />
               </AdminRoute>
             } />
           </Routes>
