@@ -49,8 +49,13 @@ export const MockDBProvider = ({ children }) => {
     }
   };
 
+  const unsaveJob = (jobId, userId) => {
+    setSavedJobs(prev => prev.filter(sj => !(sj.jobId === jobId && sj.userId === userId)));
+    addAlert('Job removed from saved!', 'info');
+  };
+
   return (
-    <MockDBContext.Provider value={{ jobs, applications, savedJobs, applyForJob, saveJob, addAlert }}>
+    <MockDBContext.Provider value={{ jobs, applications, savedJobs, applyForJob, saveJob, unsaveJob, addAlert }}>
       {children}
       {/* Global Alert System */}
       <div className="fixed bottom-4 right-4 z-50 flex flex-col gap-2">

@@ -1,17 +1,32 @@
 import { useState } from 'react';
 import { Routes, Route, Link, useNavigate, useParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { useDB } from '../context/MockDBContext';
-import { useAuth } from '../context/AuthContext';
+import { useDB } from '../../context/MockDBContext';
+import { useAuth } from '../../context/AuthContext';
 
 // --- CAREER DETAILS ---
 const CareerDetails = () => {
   const { id } = useParams();
-  const { jobs, saveJob } = useDB();
+  const { jobs, saveJob, savedJobs, unsaveJob } = useDB();
   const { user } = useAuth();
   const navigate = useNavigate();
   const job = jobs.find(j => j.id === id);
+  const isSaved = user && savedJobs.some(s => s.jobId === id && s.userId === user.id);
+  
   if (!job) return <div className="p-8 text-center">Job not found.</div>;
+  
+  const handleSaveToggle = () => {
+    if (!user) {
+      navigate('/login');
+      return;
+    }
+    if (isSaved) {
+      unsaveJob(job.id, user.id);
+    } else {
+      saveJob(job.id, user.id);
+    }
+  };
+
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="bg-white rounded-2xl shadow-xl p-8">
       <div className="flex justify-between items-start mb-6 border-b pb-6">
@@ -21,7 +36,12 @@ const CareerDetails = () => {
           <p className="text-mint-green font-semibold mt-2"><i className="bi bi-cash"></i> PHP {job.minSalary.toLocaleString()} – {job.maxSalary.toLocaleString()}</p>
         </div>
         <div className="flex gap-4">
-          <button onClick={() => user ? saveJob(job.id, user.id) : navigate('/login')} className="border-2 border-mint-green text-space-blue hover:bg-mint-green px-6 py-2 rounded-full font-semibold transition-colors flex items-center gap-2"><i className="bi bi-bookmark"></i> Save</button>
+          <button 
+            onClick={handleSaveToggle} 
+            className={`border-2 px-6 py-2 rounded-full font-semibold transition-colors flex items-center gap-2 ${isSaved ? 'border-mint-green bg-mint-green text-space-blue' : 'border-mint-green text-space-blue hover:bg-mint-green'}`}
+          >
+            <i className={`bi ${isSaved ? 'bi-bookmark-fill' : 'bi-bookmark'}`}></i> {isSaved ? 'Saved' : 'Save'}
+          </button>
           <button onClick={() => user ? navigate(`/careers/${job.id}/apply`) : navigate('/login')} className="bg-space-blue text-white hover:bg-opacity-90 px-8 py-2 rounded-full font-semibold transition-colors flex items-center gap-2"><i className="bi bi-lightning-charge"></i> Quick Apply</button>
         </div>
       </div>
