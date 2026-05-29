@@ -14,7 +14,7 @@ const Login = () => {
     if (role === 'admin' || role === 'hr') {
       navigate('/admin');
     } else {
-      navigate('/employee/account');
+      navigate('/');
     }
   };
 
@@ -151,29 +151,6 @@ const Login = () => {
                 className="w-full flex items-center justify-center gap-3 px-4 py-3 border-2 border-space-blue text-space-blue hover:bg-space-blue hover:text-white font-bold rounded-lg transition-all duration-300"
               >
                 <i className="bi bi-google"></i> Continue with Google
-              </button>
-
-              <button
-                type="button"
-                onClick={() => handleLogin('employee')}
-                className="w-full flex items-center justify-center gap-3 px-4 py-3 border-2 border-space-blue text-space-blue hover:bg-space-blue hover:text-white font-bold rounded-lg transition-all duration-300"
-              >
-                <i className="bi bi-envelope"></i> Login as Employee
-              </button>
-              <button
-                type="button"
-                onClick={() => handleLogin('hr')}
-                className="w-full flex items-center justify-center gap-3 px-4 py-3 bg-space-blue text-white hover:shadow-lg hover:opacity-90 font-bold rounded-lg transition-all duration-300"
-              >
-                <i className="bi bi-shield-check"></i> Login as HR Manager
-              </button>
-
-              <button
-                type="button"
-                onClick={() => handleLogin('admin')}
-                className="w-full flex items-center justify-center gap-3 px-4 py-3 bg-mint-green text-space-blue hover:shadow-lg hover:opacity-90 font-bold rounded-lg transition-all duration-300"
-              >
-                <i className="bi bi-lock"></i> Login as Admin
               </button>
             </div>
 

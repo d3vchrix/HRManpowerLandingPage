@@ -120,11 +120,11 @@ const JobBrowser = () => {
         <input type="text" placeholder="Search jobs by title or company..." value={search} onChange={e => { setSearch(e.target.value); setPage(1); }} className="w-full pl-12 pr-6 py-4 rounded-2xl border border-gray-200 shadow-sm text-base focus:ring-2 focus:ring-mint-green focus:outline-none" />
       </div>
 
-      <div className="flex flex-col md:flex-row gap-8">
+      <div className="flex flex-col lg:flex-row gap-4 lg:gap-8">
         {/* Filters Sidebar */}
-        <div className="w-full md:w-1/4 bg-white p-6 rounded-2xl shadow-lg h-fit">
+        <div className="w-full lg:w-1/4 bg-white p-4 sm:p-6 rounded-2xl shadow-lg lg:h-fit sticky top-20 lg:top-4 lg:sticky z-40">
           <h3 className="text-lg font-bold text-space-blue mb-4 flex items-center gap-2"><i className="bi bi-funnel"></i> Filters</h3>
-          <div className="space-y-5">
+          <div className="space-y-4 sm:space-y-5">
             <div><label className="block text-sm font-medium text-gray-700 mb-1">Job Role</label><input type="text" placeholder="e.g. Developer" value={filterRole} onChange={e => { setFilterRole(e.target.value); setPage(1); }} className="w-full border rounded-lg px-3 py-2 text-sm" /></div>
             <div><label className="block text-sm font-medium text-gray-700 mb-1">Location</label><input type="text" placeholder="e.g. Manila" value={filterLocation} onChange={e => { setFilterLocation(e.target.value); setPage(1); }} className="w-full border rounded-lg px-3 py-2 text-sm" /></div>
             <div>
@@ -144,20 +144,20 @@ const JobBrowser = () => {
         </div>
 
         {/* Listings */}
-        <div className="w-full md:w-3/4 space-y-4">
+        <div className="w-full lg:w-3/4 space-y-3 sm:space-y-4">
           <div className="text-sm text-gray-500 font-medium">{filtered.length} job{filtered.length !== 1 ? 's' : ''} found</div>
           {paged.length > 0 ? paged.map(job => (
-            <motion.div key={job.id} whileHover={{ scale: 1.01 }} className="bg-white p-6 rounded-2xl shadow-md border-l-4 border-space-blue hover:border-mint-green transition-colors">
-              <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+            <motion.div key={job.id} whileHover={{ scale: 1.01 }} className="bg-white p-4 sm:p-6 rounded-2xl shadow-md border-l-4 border-space-blue hover:border-mint-green transition-colors">
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-4">
                 <div>
-                  <h3 className="text-xl font-bold text-space-blue"><Link to={`/careers/${job.id}`} className="hover:text-mint-green transition-colors">{job.role}</Link></h3>
-                  <p className="text-gray-500 text-sm mt-1">{job.company} &bull; {job.location}</p>
-                  <div className="flex flex-wrap gap-2 mt-3">
+                  <h3 className="text-lg sm:text-xl font-bold text-space-blue"><Link to={`/careers/${job.id}`} className="hover:text-mint-green transition-colors">{job.role}</Link></h3>
+                  <p className="text-gray-500 text-xs sm:text-sm mt-1">{job.company} &bull; {job.location}</p>
+                  <div className="flex flex-wrap gap-2 mt-2 sm:mt-3">
                     <span className="bg-gray-100 text-gray-600 text-xs px-2 py-1 rounded">{job.industry}</span>
                     <span className="bg-green-50 text-green-700 text-xs px-2 py-1 rounded">PHP {job.minSalary/1000}k – {job.maxSalary/1000}k</span>
                   </div>
                 </div>
-                <Link to={`/careers/${job.id}`} className="bg-space-blue text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-mint-green hover:text-space-blue transition-colors whitespace-nowrap">View Details</Link>
+                <Link to={`/careers/${job.id}`} className="bg-space-blue text-white px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold hover:bg-mint-green hover:text-space-blue transition-colors whitespace-nowrap w-full sm:w-auto text-center\">View Details</Link>
               </div>
             </motion.div>
           )) : (

@@ -8,14 +8,14 @@ const Home = () => {
   return (
     <div className="bg-light-gray min-h-screen">
       {/* Hero Section */}
-      <section className="relative bg-space-blue text-white overflow-hidden py-20 lg:py-32">
+      <section className="relative bg-space-blue text-white overflow-hidden py-16 sm:py-20 lg:py-32">
         <div className="absolute inset-0 bg-opacity-20 bg-mint-green transform -skew-y-12 origin-top-left z-0"></div>
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <motion.h1 
             initial={{ opacity: 0, y: -20 }} 
             animate={{ opacity: 1, y: 0 }} 
             transition={{ duration: 0.8 }}
-            className="text-5xl md:text-7xl font-bold mb-6 text-mint-green"
+            className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-4 sm:mb-6 text-mint-green"
           >
             Empower Your Workforce
           </motion.h1>
@@ -23,7 +23,7 @@ const Home = () => {
             initial={{ opacity: 0, y: 20 }} 
             animate={{ opacity: 1, y: 0 }} 
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="text-xl md:text-2xl mb-10 max-w-3xl mx-auto text-gray-300"
+            className="text-sm sm:text-lg md:text-xl lg:text-2xl mb-6 sm:mb-10 max-w-3xl mx-auto text-gray-300"
           >
             Apex Manpower connects highly skilled professionals with elite organizations, driving growth and success.
           </motion.p>
@@ -31,10 +31,10 @@ const Home = () => {
             initial={{ opacity: 0 }} 
             animate={{ opacity: 1 }} 
             transition={{ duration: 0.8, delay: 0.4 }}
-            className="flex justify-center gap-4"
+            className="flex justify-center gap-2 sm:gap-4"
           >
             {!user && (
-              <Link to="/login" className="bg-mint-green text-space-blue px-8 py-3 rounded-full font-semibold hover:bg-white transition-colors duration-300 shadow-lg flex items-center gap-2">
+              <Link to="/login" className="bg-mint-green text-space-blue px-5 sm:px-8 py-2 sm:py-3 rounded-full font-semibold hover:bg-white transition-colors duration-300 shadow-lg flex items-center gap-2 text-xs sm:text-sm">
                 Get Started Today
               </Link>
             )}
