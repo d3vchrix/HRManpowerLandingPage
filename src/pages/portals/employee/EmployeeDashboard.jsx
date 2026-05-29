@@ -10,10 +10,11 @@ import EmployeeSavedJobs from './EmployeeSavedJobs';
 import EmployeeSettings from './EmployeeSettings';
 
 // --- PROFILE CARD (Right Sidebar Widget) ---
+// FIX: Removed 'sticky top-4' from the wrapper div
 const ProfileCompletionWidget = ({ user }) => {
-  const completionPercentage = 75; // Calculate based on profile fields
+  const completionPercentage = 75; 
   return (
-    <div className="bg-white rounded-2xl shadow-md border border-gray-200 p-6 sticky top-4">
+    <div className="bg-white rounded-2xl shadow-md border border-gray-200 p-6">
       <h3 className="text-lg font-bold text-space-blue mb-4">Profile Completion</h3>
       <div className="relative h-4 bg-gray-200 rounded-full overflow-hidden mb-2">
         <div className="h-full bg-mint-green" style={{ width: `${completionPercentage}%` }}></div>
@@ -29,9 +30,10 @@ const ProfileCompletionWidget = ({ user }) => {
 };
 
 // --- QUICK ACTIONS WIDGET ---
+// FIX: Removed 'sticky top-80' from the wrapper div
 const QuickActionsWidget = () => {
   return (
-    <div className="bg-white rounded-2xl shadow-md border border-gray-200 p-6 sticky top-80">
+    <div className="bg-white rounded-2xl shadow-md border border-gray-200 p-6">
       <h3 className="text-lg font-bold text-space-blue mb-4">Quick Actions</h3>
       <div className="space-y-3">
         <button className="w-full bg-mint-green text-space-blue font-bold py-2 rounded-lg hover:bg-opacity-90 transition-all flex items-center justify-center gap-2">
@@ -115,12 +117,12 @@ const EmployeeDashboard = () => {
       className="bg-light-gray min-h-screen py-8"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Three Column Layout */}
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+          
           {/* LEFT COLUMN - Navigation Sidebar */}
-          <div className="lg:col-span-1">
-            <div className="bg-white rounded-2xl shadow-md border border-gray-200 overflow-hidden sticky top-4">
-              {/* Profile Header */}
+          <div className="md:col-span-1">
+            {/* FIX: Changed top-4 to top-24 to clear the sticky navbar */}
+            <div className="bg-white rounded-2xl shadow-md border border-gray-200 overflow-hidden sticky top-24">
               <div className="bg-gradient-to-b from-space-blue to-blue-700 text-white p-6 text-center">
                 <img
                   src={user.photoURL}
@@ -131,7 +133,6 @@ const EmployeeDashboard = () => {
                 <p className="text-mint-green text-sm font-semibold">{user.title || 'Employee'}</p>
               </div>
 
-              {/* Navigation Menu */}
               <nav className="p-4 space-y-2">
                 {[
                   ['account', 'bi-person', 'Profile'],
@@ -158,31 +159,32 @@ const EmployeeDashboard = () => {
           </div>
 
           {/* CENTER COLUMN - Main Content */}
-          <div className="lg:col-span-2">
+          <div className="md:col-span-2">
             <motion.div
               key={path}
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.2 }}
-              className="bg-white rounded-2xl shadow-md border border-gray-200 p-8"
+              className="bg-white rounded-2xl shadow-md border border-gray-200 p-4 sm:p-6 md:p-8"
             >
-              {/* Page Header */}
               <div className="mb-8 border-b border-gray-200 pb-6">
                 <h2 className="text-3xl font-bold text-space-blue">{titles[path] || 'Dashboard'}</h2>
                 <p className="text-gray-600 text-sm mt-2">Manage your profile and job applications</p>
               </div>
-
-              {/* Page Content */}
               <div className="space-y-6">{renderContent()}</div>
             </motion.div>
           </div>
 
           {/* RIGHT COLUMN - Widgets Sidebar */}
-          <div className="lg:col-span-1 space-y-6">
-            <ProfileCompletionWidget user={user} />
-            <JobStatsWidget user={user} />
-            <QuickActionsWidget />
+          {/* FIX: Wrapped widgets in a single sticky column container with gap/spacing */}
+          <div className="md:col-span-3 lg:col-span-1">
+            <div className="sticky top-24 flex flex-col gap-4 md:gap-6">
+              <ProfileCompletionWidget user={user} />
+              <JobStatsWidget user={user} />
+              <QuickActionsWidget />
+            </div>
           </div>
+          
         </div>
       </div>
     </motion.div>

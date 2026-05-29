@@ -44,9 +44,7 @@ const AuthGuard = ({ children, isLoginRoute = false }) => {
     if (user.role === 'hr') {
       return <Navigate to="/hr" />;
     }
-    if (user.role === 'employee') {
-      return <Navigate to="/employee" />;
-    }
+    // Allow employees to stay on public pages - they can navigate to dashboard from profile
   }
   return children;
 };
@@ -77,11 +75,13 @@ function App() {
             <Route path="/news" element={<AuthGuard><PublicLayout><News /></PublicLayout></AuthGuard>} />
             <Route path="/login" element={<AuthGuard><PublicLayout><Login /></PublicLayout></AuthGuard>} />
             <Route path="/demo-login" element={<AuthGuard><PublicLayout><DemoLogin /></PublicLayout></AuthGuard>} />
-            
+
             {/* NEW: Facebook-style Employee Portal (no animations, protected) */}
             <Route path="/employee/*" element={
               <EmployeeRoute>
-                <EmployeePortal />
+                <PublicLayout>
+                  <EmployeePortal />
+                </PublicLayout>
               </EmployeeRoute>
             } />
 
